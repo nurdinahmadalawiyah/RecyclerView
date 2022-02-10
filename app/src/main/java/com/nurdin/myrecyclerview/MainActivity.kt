@@ -1,8 +1,10 @@
 package com.nurdin.myrecyclerview
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -22,7 +24,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showRecyclerList() {
-        rvHeroes.layoutManager = LinearLayoutManager(this)
+        if(applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            rvHeroes.layoutManager = GridLayoutManager(this, 2)
+        } else {
+            rvHeroes.layoutManager = LinearLayoutManager(this)
+        }
         val listHeroAdapter = ListHeroAdapter(list)
         rvHeroes.adapter = listHeroAdapter
 
