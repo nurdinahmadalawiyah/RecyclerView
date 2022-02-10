@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.nurdin.myrecyclerview.databinding.ItemRowHeroBinding
 
 class ListHeroAdapter(private val listHero: ArrayList<Hero>) : RecyclerView.Adapter<ListHeroAdapter.ListViewHolder>(){
     private lateinit var onItemClickCallback: OnItemClickCallback
@@ -15,15 +16,13 @@ class ListHeroAdapter(private val listHero: ArrayList<Hero>) : RecyclerView.Adap
         this.onItemClickCallback = onItemClickCallback
     }
 
-    class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var imgPhoto: ImageView = itemView.findViewById(R.id.img_item_photo)
-        var tvName: TextView = itemView.findViewById(R.id.tv_item_name)
-        var tvDescription: TextView = itemView.findViewById(R.id.tv_item_description)
+    class ListViewHolder(var binding: ItemRowHeroBinding) : RecyclerView.ViewHolder(binding.root) {
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_row_hero, parent, false)
-        return ListViewHolder(view)
+        val binding = ItemRowHeroBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ListViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
@@ -31,12 +30,9 @@ class ListHeroAdapter(private val listHero: ArrayList<Hero>) : RecyclerView.Adap
         Glide.with(holder.itemView.context)
             .load(photo)
             .circleCrop()
-            .into(holder.imgPhoto)
-        holder.tvName.text = name
-        holder.tvDescription.text = description
-//        holder.itemView.setOnClickListener{
-//            Toast.makeText(holder.itemView.context, "Kamu memilih " + listHero[holder.adapterPosition].name, Toast.LENGTH_SHORT).show()
-//        }
+            .into(holder.binding.imgItemPhoto)
+        holder.binding.tvItemName.text = name
+        holder.binding.tvItemDescription.text = description
         holder.itemView.setOnClickListener{
             onItemClickCallback.onItemClicked(listHero[holder.adapterPosition])
         }
